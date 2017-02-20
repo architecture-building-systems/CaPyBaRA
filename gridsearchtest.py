@@ -17,21 +17,21 @@ import numpy as np
 from sklearn.gaussian_process.kernels import WhiteKernel, ExpSineSquared
 import time
 
-xl = pd.ExcelFile("OutputSummary_17-01-15-014432.xlsx")
+xl = pd.ExcelFile("GPRdataset.xls")
 print xl.sheet_names
-df = xl.parse("OutputSummary_17-01-15-014432")
+df = xl.parse("Sheet 1")
 print df.head()
 #df = pd.read_csv("OutputSummary_16-12-05-004805.csv")
 
-X = df.iloc[0:4999,1:36].values
+X = df.iloc[0:9999,1:8].values
 #Xnorm = preprocessing.normalize(X)
 min_max_scaler = preprocessing.MinMaxScaler()
 Xnorm = min_max_scaler.fit_transform(X)
-y = df.iloc[0:4999,47].values
-print X[29,:]
-print y[29]
+y = df.iloc[0:9999,8].values
+#print X[29,:]
+#print y[29]
 
-x = np.atleast_2d([[10.,6.,3.],[6,8,4],[4,4,2],[5,3,2],[6,4,9]])
+#x = np.atleast_2d([[10.,6.,3.],[6,8,4],[4,4,2],[5,3,2],[6,4,9]])
 xpred = Xnorm[0:5,:]
 
 # Instantiate a Gaussian Process model
@@ -55,10 +55,9 @@ print("\nLearned kernel: %s" % gp.kernel_)
 print("Log-marginal-likelihood: %.3f"
       % gp.log_marginal_likelihood(gp.kernel_.theta))
 
-X_ = np.linspace(X.min(), X.max() + 30, 1000)[:, np.newaxis]
 y_pred, y_std = gp.predict(Xnorm, return_std=True)
 
-joblib.dump(gp, 'TRNSYSgp.pkl')
+joblib.dump(gp, 'GPR_TestCase_1.pkl')
 #pickle.dump(gp, open('TRNSYSgppkl.pkl','wb'))
 
 line = plt.figure()

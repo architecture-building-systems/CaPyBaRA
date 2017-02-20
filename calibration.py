@@ -4,8 +4,9 @@ Bayesian calibration routine
 
 based on work of (Patil_et_al, 2010 - #http://www.map.ox.ac.uk/media/PDF/Patil_et_al_2010.pdf) in MCMC in pyMC3
 and the works of bayesian calibration of (Kennedy and O'Hagan, 2001)
+
 ===========================
-J. Fonseca  script development          27.10.16
+A. Rysanek, J. Fonseca  20.02.17
 
 
 """
@@ -27,22 +28,14 @@ import numpy as np
 from scipy import optimize
 from theano import as_op
 
-# import cea.globalvar as gv
-# gv = gv.GlobalVariables()
-# import cea.inputlocator as inputlocator
-# scenario_path = gv.scenario_reference
-# locator = inputlocator.InputLocator(scenario_path=scenario_path)
-# weather_path = locator.get_default_weather()
-
-
-__author__ = "Jimeno A. Fonseca"
-__copyright__ = "Copyright 2016, Architecture and Building Systems - ETH Zurich"
-__credits__ = ["Jimeno A. Fonseca"]
-__license__ = "MIT"
-__version__ = "0.1"
-__maintainer__ = "Daren Thomas"
-__email__ = "cea@arch.ethz.ch"
-__status__ = "Production"
+#__author__ = "Jimeno A. Fonseca"
+#__copyright__ = "Copyright 2016, Architecture and Building Systems - ETH Zurich"
+#__credits__ = ["Jimeno A. Fonseca"]
+#__license__ = "MIT"
+#__version__ = "0.1"
+#__maintainer__ = "Daren Thomas"
+#__email__ = "cea@arch.ethz.ch"
+#__status__ = "Production"
 
 gp = joblib.load('TRNSYSgp.pkl')
 obs_data = []
