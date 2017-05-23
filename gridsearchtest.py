@@ -17,21 +17,24 @@ import numpy as np
 from sklearn.gaussian_process.kernels import WhiteKernel, ExpSineSquared
 import time
 
-xl = pd.ExcelFile("GPRdataset.xls")
+xl = pd.ExcelFile("OutputSummary_17-04-08-204210.xlsx")
 print xl.sheet_names
-df = xl.parse("Sheet 1")
+df = xl.parse("OutputSummary_17-04-08-204210")
 print df.head()
 #df = pd.read_csv("OutputSummary_16-12-05-004805.csv")
 
-X = df.iloc[0:9999,1:8].values
+X = df.iloc[0:6999,1:36].values
+#X = df.iloc[0:4999,1:22].values
 #Xnorm = preprocessing.normalize(X)
 min_max_scaler = preprocessing.MinMaxScaler()
 Xnorm = min_max_scaler.fit_transform(X)
-y = df.iloc[0:9999,8].values
-#print X[29,:]
-#print y[29]
+#Xnorm = X
+y = df.iloc[0:6999,47].values
+#y = df.iloc[0:4999,33].values
+print X[29,:]
+print y[29]
 
-#x = np.atleast_2d([[10.,6.,3.],[6,8,4],[4,4,2],[5,3,2],[6,4,9]])
+x = np.atleast_2d([[10.,6.,3.],[6,8,4],[4,4,2],[5,3,2],[6,4,9]])
 xpred = Xnorm[0:5,:]
 
 # Instantiate a Gaussian Process model
@@ -48,21 +51,22 @@ k4 = 316**2 * RBF(length_scale=4.82) + WhiteKernel(noise_level=0.43)  # noise te
 kernel = k1 + k2 + k3 + k4
 
 gp = GaussianProcessRegressor(kernel=kernel, alpha=1e-7,
-                              normalize_y=True, n_restarts_optimizer=0)
+                              normalize_y=True, n_restarts_optimizer=2)
 gp.fit(Xnorm, y)
 
 print("\nLearned kernel: %s" % gp.kernel_)
 print("Log-marginal-likelihood: %.3f"
       % gp.log_marginal_likelihood(gp.kernel_.theta))
 
-y_pred, y_std = gp.predict(Xnorm, return_std=True)
+X_ = np.linspace(X.min(), X.max() + 30, 1000)[:, np.newaxis]
+y_pred = gp.predict(Xnorm, return_std=False)
 
-joblib.dump(gp, 'GPR_TestCase_1.pkl')
+joblib.dump(gp, 'TRNSYSgp.pkl')
 #pickle.dump(gp, open('TRNSYSgppkl.pkl','wb'))
 
 line = plt.figure()
 plt.plot(y, y_pred, "o")
-plt.plot([0, 0], [100, 100], 'k-', lw=2)
+plt.plot([0, 6000], [0, 6000], 'k-', lw=2)
 plt.show()
 
 y_pred, y_std = gp.predict(Xnorm[0,:], return_std=True)
@@ -84,4 +88,3 @@ print y_std
 y_pred, y_std = gp.predict(Xnorm[4,:], return_std=True)
 print y_pred
 print y_std
-

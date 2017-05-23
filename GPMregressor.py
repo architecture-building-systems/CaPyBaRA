@@ -45,8 +45,9 @@ print df.head()
 X = df.iloc[0:2000,1:4].values # Input values per sample
 y = df.iloc[0:2000,7].values # Model output per sample (e.g., RMSE)
 
-min_max_scaler = preprocessing.MinMaxScaler() # Normalize input data
-Xnorm = min_max_scaler.fit_transform(X)
+#min_max_scaler = preprocessing.MinMaxScaler() # Normalize input data
+#Xnorm = min_max_scaler.fit_transform(X)
+Xnorm = X
 print X[29,:]
 print y[29]
 
@@ -79,7 +80,7 @@ print("Log-marginal-likelihood: %.3f"
 
 # Save Gaussian Process Model to Pickle
 # --------------------------------------------------------------------------------------
-joblib.dump(gp, 'SinusGP.pkl')
+joblib.dump(gp, 'GPR_TestCase_1.pkl')
 
 
 # Post processing / Not necessary but just for testing
